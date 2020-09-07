@@ -4,10 +4,12 @@ const HttpError = require("../models/Http-error");
 const registerUser = async (req, res, next) => {
   const { name, password, email } = req.body;
 
+  const emailToLowerCase = email.toLowerCase();
+
   let existedUser;
 
   try {
-    existedUser = await User.findOne({ email: email });
+    existedUser = await User.findOne({ email: emailToLowerCase });
   } catch (err) {
     const error = new HttpError("Coś poszło nie tak, spróbuj ponownie", 500);
 
@@ -26,7 +28,7 @@ const registerUser = async (req, res, next) => {
   const createdUser = new User({
     name,
     password,
-    email,
+    email: emailToLowerCase,
     cart: [],
   });
 
@@ -44,10 +46,12 @@ const registerUser = async (req, res, next) => {
 const loginUser = async (req, res, next) => {
   const { email, password } = req.body;
 
+  const emailToLowerCase = email.toLowerCase();
+
   let existedUser;
 
   try {
-    existedUser = await User.findOne({ email });
+    existedUser = await User.findOne({ email: emailToLowerCase });
   } catch (err) {
     const error = new HttpError("Coś poszło nie tak, spróbuj ponownie", 500);
 
